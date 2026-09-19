@@ -1,0 +1,21 @@
+{
+  "name": "kanban-board",
+  "version": "1.0.0",
+  "description": "Kanban Board Engine in TypeScript Advanced",
+  "main": "main.ts",
+  "type": "module",
+  "scripts": {
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "start": "npx tsx main.ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "tsx": "^4.19.0",
+    "typescript": "^5.5.0",
+    "vitest": "^2.0.0"
+  }
+}
