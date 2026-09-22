@@ -1,6 +1,7 @@
 import { describe, it, expect } from "vitest";
 import { Task } from "../src/Task";
 import { Column } from "../src/Column";
+import { Board } from "../src/Board";
 import { Priority } from "../src/EPriority";
 import { TaskStatus } from "../src/ETaskStatus";
 
@@ -126,4 +127,42 @@ describe("Column Model", () => {
         expect(colTodo.tasks.length).toBe(0);
     });
 });
+
+describe("Board Model", () => {
+    it("should add columns and find tasks across columns", () => {
+        const board = new Board("B1", "Project Board");
+        board.addColumn("TODO");
+        board.addColumn("DONE");
+
+        expect(board.columns.length).toBe(2);
+        expect(board.columns[0].name).toBe("TODO");
+
+        const task1 = new Task("T1", "Task 1", "Desc 1");
+        board.columns[0].addTask(task1);
+
+        const found = board.findTask("T1");
+        expect(found).not.toBeNull();
+        expect(found?.title).toBe("Task 1");
+
+        const notFound = board.findTask("GHOST-ID");
+        expect(notFound).toBeNull();
+    });
+
+    it("should move tasks between columns using Board", () => {
+        const board = new Board("B1", "Project Board");
+        const colTodo = new Column("COL-1", "TODO");
+        const colDone = new Column("COL-2", "DONE");
+        board.columns.push(colTodo, colDone);
+
+        const task = new Task("T1", "Moving Task", "Desc");
+        colTodo.addTask(task);
+
+        board.moveTaskBetweenColumns("T1", colTodo, colDone);
+
+        expect(colTodo.tasks.length).toBe(0);
+        expect(colDone.tasks.length).toBe(1);
+        expect(colDone.tasks[0].id).toBe("T1");
+    });
+});
+
 
